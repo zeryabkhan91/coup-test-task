@@ -1,0 +1,4 @@
+# django==4.2.8
+psycopg==3.1.13
+psycopg2-binary==2.9.9
+django-redis==3.1.6
