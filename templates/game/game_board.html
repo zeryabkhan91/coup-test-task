@@ -1,0 +1,114 @@
+{% extends 'base.html' %} {% load static %}{% block content %}
+<div id="game-board">
+  <h1>Game Board</h1>
+  <div class="game-board__stats">
+    <div id="current-player">
+      <h3>Current Player:</h3>
+      <p class="current-player-name">
+        {{ game.cur_player }} 
+      </p>
+    </div>
+  </div>
+</div>
+<div id="players">
+  <div id="player1" class="player-section" 
+  >
+    <h3>Player 1</h3>
+    <table width="80%" align="center">
+      <tr>
+        <th>Coins</th>
+        <th>Influence</th>
+        <th>Lost influence</th>
+      </tr>
+        <tr>
+          <td align="center;">{{game.all_users.0.money}}</td>
+          <td>
+            {% if game.all_users.0.name == user.name %}
+              {% for card in game.all_users.0.print_playing_cards %}
+                {{ card }}
+              {% endfor %}
+            {% else %}
+              {% for card in game.all_users.0.print_playing_cards %}
+                unknown
+              {% endfor %}
+            {% endif %}
+          </td>
+          <td>
+              {% for card in game.all_users.0.print_killed %} 
+                {{ card }} 
+              {% endfor %}
+          </td>
+        </tr> 
+    </table>
+  </div>
+
+  <div id="center-cards" class="player-section">
+    <h3>Center Cards:</h3>
+    <div class="card-list">
+      {% for card in center_cards %}
+      <span class="card {{ card.color }}">{{ card.name }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div id="ai-player" class="player-section">
+    <h3>AI Player</h3>
+    <table width="80%" margin-top="5px" align="center">
+      <tr>
+        <th>Coins</th>
+        <th>Influence</th>
+        <th>Lost influence</th>
+      </tr>
+        <tr>
+          <td align="center;">{{game.all_users.1.money}}</td>
+          <td>
+            {% if game.all_users.1.name == user.name %}
+              {% for card in game.all_users.1.print_playing_cards %}
+                {{ card }}
+              {% endfor %}
+            {% else %}
+              {% for card in game.all_users.1.print_playing_cards %}
+                unknown
+              {% endfor %}
+            {% endif %}
+          </td>
+          <td>
+              {% for card in game.all_users.1.print_killed %} 
+                {{ card }} 
+              {% endfor %}
+          </td>
+        </tr> 
+    </table>
+  </div>
+</div>
+
+<div>
+  <p>You are playing under name {{ user.name }}</p>
+</div>
+<p></p>
+<p style="white-space: pre-line">{{ game.action.message }}</p>
+
+
+{% if game.action.status == 0 %}
+    {% include 'game/action.html' %}
+
+{% elif game.action.status == 1 %}
+    {% include 'game/challenge_action.html' %}
+
+{% elif game.action.status == 2 %}
+    {% include 'game/block.html' %}
+
+{% elif game.action.status == 3 %}
+    {% include 'game/challenge_block.html' %}
+
+{% elif game.action.status == 4 %}
+    {% include 'game/lose_life.html' %}
+
+{% elif game.action.status == 6 %}
+    {% include 'game/notify.html' %}
+
+{% elif game.action.status == 7 %}
+    {% include 'game/ambassador.html' %}
+
+{% endif %}
+{% endblock %}

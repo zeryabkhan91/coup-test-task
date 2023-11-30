@@ -1,0 +1,132 @@
+<!-- coup_project/templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://underscorejs.org/underscore-min.js"></script>
+    <title>Coup Card Game</title>
+
+    {% load static %}
+
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+      }
+
+      header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+      }
+
+
+      h1,
+      h2,
+      h3 {
+        color: #333;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+      }
+
+      #game-board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #27ae60;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+      }
+
+      .game-board__stats {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: space-between;
+        justify-content: space-between;
+
+      }
+
+      #players,
+      #current-player,
+      #available-actions {
+        margin-bottom: 20px;
+      }
+
+      #players {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 40px
+      }
+
+      .player-section {
+        min-width: 400px;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #players ul {
+        display: flex;
+        flex-wrap: wrap;
+      }
+
+      span {
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-right: 4px;
+      }
+
+      .red {
+        background-color: #ff6f69;
+        color: #fff;
+      }
+      .purple {
+        background-color: #a77dc2;
+        color: #fff;
+      }
+      .blue {
+        background-color: #70a1ff;
+        color: #fff;
+      }
+      .green {
+        background-color: #7bed9f;
+        color: #333;
+      }
+      .black {
+        background-color: #333;
+        color: #fff;
+      }
+    </style>
+
+    <script type="text/javascript" rel="script" src="{% static 'js/play_coup.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    <header>
+      <h1>Coup Card Game</h1>
+    </header>
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>
