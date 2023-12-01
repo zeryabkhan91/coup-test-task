@@ -1,12 +1,16 @@
 import json
 import time
+import random
 
+from django.http import HttpRequest, JsonResponse
+from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.contrib import messages
 # from django.core.serializers import serialize
 
 from .models import Game
-from .utils import complete_change_turn, ai_turn, block, challenge
+from .utils import complete_change_turn, block, challenge
 from .utils import lost_influence, challenge_block, ambassador_card_selection ,initial_action
 
 events = dict()
@@ -30,14 +34,23 @@ def create_game(request):
 
 
 def game_board(request):
-    game_id = request.COOKIES.get("COUP_game_id")
-    game = Game.load(game_id)
-    context ={}
+    ai_player_name = request.POST.get("COUP_name")
 
+    if ai_player_name:
+        game_id = request.POST.get("COUP_game_id")
+        game = Game.load(game_id)
+        game.cur_player = name = ai_player_name
+        user = game.get_user(ai_player_name)
+    else:
+        name = request.COOKIES.get("COUP_name")
+        game_id = request.COOKIES.get("COUP_game_id")
+        game = Game.load(game_id)
+        game.cur_player = game.all_users[0].name
+        user = game.get_user(name)
+
+    context ={}
     if game is None:
-        return redirect("index")
-    name = request.COOKIES.get("COUP_name")
-    user = game.get_user(name)
+        return redirect("index")    
 
     if request.method == "GET":
         if game.action.status == 4:
@@ -115,14 +128,26 @@ def game_board(request):
         complete_change_turn(name, game)
 
     game.save()
-    # ai_turn(game)
+
+    data = {}
+    if not  ai_player_name:
+        data = {
+            "url": "game_board",
+            "ai_turn": True
+        }
+    else:
+        data = {
+            "url": "game_board"
+        }
+
     for user_ in game.all_users:
         events[f"{game_id}:{user_.name}"] = {
             "type": "reload",
-            "data": {
-                "url": "game_board",
-            },
+            "data": data,
         }
+
+    user = game.all_users[0]
+
     return render(request, "game/game_board.html", {"game": game, "user": user})
 
 def winning(request):
@@ -145,14 +170,74 @@ def long_polling(request):
 
     name = request.COOKIES.get("COUP_name")
     event_target = f"{game_id}:{name}"
+    event = get_event(event_target)
+    
+    if event:
+        return JsonResponse(event)
+    else:
+        return JsonResponse({})
+        
+def ai_turn(request):
+    game_id = request.COOKIES.get("COUP_game_id")
+    game = Game.load(game_id)
 
-    while True:
-        event = get_event(event_target)
+    if game is None:
+        return redirect("index")
 
-        if event:
-            return JsonResponse(event)
-        time.sleep(1)
+    name = "AI Player"
+    user = game.get_user(name)
+    status = game.action.status
 
+    payload = {
+        "COUP_name": "AI Player",
+        "COUP_game_id": game.id,
+    }
+ 
+    if status == 0:
+        if user.money > 9:
+            target_player = game.all_users[0]
+            payload["coup"] = target_player.name
+        else:        
+            actions_dict = {
+                "submit": ["income", "foreign aid", "taxes", "ambassador"],
+                "steal": target_player.name,
+                "assassinate": target_player.name
+            }
+
+            random_action = random.choice(list(actions_dict.keys()))
+            
+            if random_action == "submit":
+                random_value = random.choice(actions_dict["submit"])
+            else:
+                random_value = actions_dict[random_action]
+
+            payload[random_action] = random_value
+    elif status == 1:
+        random_value = random.choice(["yes", "no"])
+        payload["challenge"] = random_value
+    elif status == 2:
+        random_value = random.choice(["yes", "no"])
+        payload["block"] = random_value
+    elif status == 3:
+        random_value = random.choice(["yes", "no"])
+        payload["submit"] = random_value
+    elif status == 4:
+        
+        cards = user.print_playing_cards()
+        random_value = random.choice(cards)
+        payload["to_kill"] = random_value
+    elif status == 7:
+        cards = user.print_playing_cards()
+        payload["card"] = cards
+
+
+    request = HttpRequest()
+    request.method = 'POST'
+    request.POST = payload
+
+    game_board(request)
+    
+    return JsonResponse({"success": True})
 
 def get_event(event_target):
     try:

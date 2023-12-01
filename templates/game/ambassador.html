@@ -1,11 +1,12 @@
-{% if game.action.action[1] == user.name %}
+{% if game.action.action.1 == user.name %}
     <div>
     <form method="POST">
+        {{ csrf_token }}
         <p> Select exactly <span id="n_cards">{{user.playing_cards|length}}</span> card(s). </p>
         <p>
             {% for card in game.action.ambassador_cards %}
                 <input type="checkbox" name="card" value={{card}} onclick="return ValidateCardSelection();">
-                {{game.deck.mapping[card]}}
+                {{game.deck.mapping.card}}
                 <br>
             {% endfor %}
         </p>

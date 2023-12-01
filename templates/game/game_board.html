@@ -1,14 +1,6 @@
 {% extends 'base.html' %} {% load static %}{% block content %}
 <div id="game-board">
   <h1>Game Board</h1>
-  <div class="game-board__stats">
-    <div id="current-player">
-      <h3>Current Player:</h3>
-      <p class="current-player-name">
-        {{ game.cur_player }} 
-      </p>
-    </div>
-  </div>
 </div>
 <div id="players">
   <div id="player1" class="player-section" 
@@ -40,15 +32,6 @@
           </td>
         </tr> 
     </table>
-  </div>
-
-  <div id="center-cards" class="player-section">
-    <h3>Center Cards:</h3>
-    <div class="card-list">
-      {% for card in center_cards %}
-      <span class="card {{ card.color }}">{{ card.name }}</span>
-      {% endfor %}
-    </div>
   </div>
 
   <div id="ai-player" class="player-section">

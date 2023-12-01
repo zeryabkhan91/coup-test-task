@@ -3,7 +3,8 @@ $(document).ready(function(){
 });
 
 window.reload = function(data){
-    window.location.href = data.url;
+    const location = window.location
+    window.location.href = `${location.origin}/${data.url}`
 }
 
 function loadState() {
@@ -13,11 +14,27 @@ function loadState() {
             method: 'GET',
             dataType: 'json',
             success: function(event){
-                window[event.type](event.data);
-                loadState();
+                if(event != {})
+                {
+                    if (window[event.type]) 
+                        window[event.type](event.data);
+                    if(event.data && event.data.ai_turn) {  ai_turn() }
+
+                    loadState();
+                }
             }
         });
-    }, 1000);
+    }, 2000);
+}
+
+function ai_turn() {
+    $.ajax({
+        url: '/ai-turn',
+        method: 'GET',
+        error: function(xhr, status, error) {
+            console.error("Failed to trigger AI turn:", status, error);
+        }
+    });
 }
 
 function verifyAmbassador(){

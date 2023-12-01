@@ -1,9 +1,9 @@
-{% if game.action.lose_life[0] == user.name %}
+{% if game.action.lose_life.0 == user.name %}
 <form method="POST">
     <p>Select the card to be killed:</p>
     <p>
-        {% for card in user.print_playing_cards() %}
-            <input type="submit" name="to_kill" value={{card}}>
+        {% for card in user.print_playing_cards %}
+            <input type="submit" name="to_kill" value="{{ card }}">
         {% endfor %}
     </p>
 </form>
