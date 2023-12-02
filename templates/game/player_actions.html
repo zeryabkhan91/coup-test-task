@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div id="player-actions">
+  <h1>Player Actions</h1>
+
+  <div id="available-actions">
+    <h3>Available Actions:</h3>
+    <ul class="action-list">
+      {% for action in actions %}
+      <li class="action">{{ action }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div id="player-cards">
+    <h3>Your Cards:</h3>
+    <ul class="card-list">
+      {% for card in cards %}
+      <li class="card {{ card.color }}">{{ card.name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" />

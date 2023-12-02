@@ -1,0 +1,66 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+venv.bak/
+*.venv/
+
+# Local development settings
+local_settings.py
+
+# Database
+db.sqlite3
+
+# Log files
+*.log
+
+# Media files
+media/
+
+# Static files
+staticfiles/
+
+# Environment variables file
+.env
+
+# IDE specific files
+.idea/
+.vscode/
+
+# Compiled Python files
+*.pyc
+*.pyo
+
+# Caches and compiled templates
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Node.js
+node_modules/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Visual Studio Code directory
+.vscode/
+
+# PyCharm directory
+.idea/
+
+# Eclipse directory
+*.pydevproject
+*.pydevprojectc
+*.pydevprojecti

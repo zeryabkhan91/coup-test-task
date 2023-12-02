@@ -1,0 +1,83 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+#game-board {
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+h1, h2, h3 {
+  color: #333;
+}
+
+.player-list {
+  list-style: none;
+  padding: 0;
+}
+
+.player {
+  margin-bottom: 10px;
+}
+
+.player-name {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.card {
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+
+#current-player-name {
+  font-weight: bold;
+}
+
+.action-list {
+  list-style: none;
+  padding: 0;
+}
+
+.action {
+  margin-bottom: 8px;
+  background-color: #70a1ff;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+#player-actions {
+  max-width: 600px;
+  margin: 20px auto;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+h1, h3 {
+  color: #333;
+}
+
+.action-list, .card-list {
+  list-style: none;
+  padding: 0;
+}
+
+.action, .card {
+  margin-bottom: 8px;
+  background-color: #70a1ff;
+  color: #fff;
+  padding: 8px;
+  border-radius: 4px;
+}
+
